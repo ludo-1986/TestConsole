@@ -16,6 +16,12 @@ Returning to Python after an extended break, I created this console-mode reposit
 
 The goal is simple: test concepts, clear up technical doubts (from core basics to specific edge cases), and validate code snippets before integrating them into an active project—keeping my main repositories clean and focused.
 
+## 🗃️ File-based Work
+
+### `date_color.py`
+
+As the name suggests, it allows you to create a color palette based on a specific date (such as a birth date or any other date).
+
 ## 🛠️ Installation
 
 - [x] Create a parent directory and clone the repository.

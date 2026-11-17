@@ -20,7 +20,7 @@ def get_data_dir() -> Path:
         return data_path
     
     # En développement local sur ton PC (Ubuntu)
-    local_dir = Path(__file__).parent.parent / "assets"
+    local_dir = Path(__file__).parent / "assets"
     local_dir.mkdir(parents=True, exist_ok=True)
     return local_dir
 
@@ -56,7 +56,7 @@ def read_file(dir: str="data", file_name: str="config.json") -> dict|list[dict]|
         return False
     
     
-def save_file(data: dict|list|str, file_name: str, old: str|bool=False) -> tuple|None:
+def save_file(data: dict|list|str, file_name: str, old: str|bool=False, is_json: bool=True) -> tuple|None:
     """
         Sauvegarde des données dans un fichier JSON et copie des images
         
@@ -97,10 +97,13 @@ def save_file(data: dict|list|str, file_name: str, old: str|bool=False) -> tuple
         # Sauvegarde du JSON dans le dossier persistant
         file_path = data_dir / "data" / file_name
         file_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        with file_path.open("w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
-            
+        if is_json:
+            with file_path.open("w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
+        else:
+            with file_path.open("w", encoding="utf-8") as f:
+                for i in data:
+                    f.write(str(i).expandtabs(4) + "\n")
     
 def validate_mandatory_fields(input_data: dict, fields_to_check: list[tuple[str, str]]) -> list[str]:
     """
