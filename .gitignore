@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Environments
+.env
+.envrc
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Build
+.buildozer
+bin/
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Django stuff:
+*.log
+local_settings.py
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+*.s3db
+*.sl3
+
+# Flet
+.flet/
+build/
+data/
+imgdata/
+
+# IDE
+.idea/
+.vscode/
+tempCodeRunnerFile.py
+
+# macOS
+.DS_Store
