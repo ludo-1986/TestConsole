@@ -1,7 +1,7 @@
 import tools
 from rich import print
 
-my_date = input("choose a date (123456 or 12345678) --> ")
+my_date = tools.ask_number(question="choice a date", date=True)
 my_date_list_str = [my_date[i:i+2] for i in range(0, len(my_date), 2)]
 my_date_list_int = [int(my_date[i:i+2]) for i in range(0, len(my_date), 2)]
 total_date = "0"
@@ -245,29 +245,44 @@ change_color_base: dict[str, str] = {
 data_list = [
     "GIMP Palette",
     "Columns: 3",
+    f"# {len(change_color_base)} Colors",
     "# R G B Color name"
     ]
 
 data_dict = {}
+
+key_len = [len(k[0]) for k in change_color_base.items()]
+line_dict = [len(k) + len(v) for k, v in change_color_base.items()]
+space = max(line_dict) - len(my_date) + 10
+before = round(space / 2)
+after = space - before
+
+print(f"[bold underline {'#00FF86'}]{" " * before}{my_date}{" " * after}[/]")
     
-for k, v in change_color_base.items():
+for k, v in sorted(change_color_base.items(), key=lambda item: item[0]):
     
     hex_color = f"#{v}" if not v.startswith("#") else v
     
     r, g, b = hex_to_rgb(v)
     data_list.append(f"{r}\t{g}\t{b}\t{k.capitalize()}")
     
-    data_dict.update({k.replace(" ", "_") : f"#{v}"})
+    data_dict.update({k.replace(" ", "_") : f"#{v.upper()}"})
     
-    # On utilise la syntaxe Rich : [color=HEX]texte[/color]
-    print(f"[{hex_color}]{k} : {v}[/]")
+    lumen = r * 0.2126 + g * 0.7152 + b * 0.0722
     
-print(f"{len(change_color_base)} colors")
-saving = input("save the colors to a file (y/n) --> ").lower().strip()
+    text_color = "#f1986f" if lumen < 100 else "#080324"
+    space = max(key_len) - len(k) + 4
+    first = round(space / 2)
+    last = space - first
+    
+    print(f"[{text_color} on {hex_color}]{" " * first}{k}{" " * last}|  #{v.upper()}  [/]")
+    
+print(f"[{'#00FF86'}]{len(change_color_base)} colors[/]")
+saving = input(f"save the colors to a file (y/n) --> ").lower().strip()
 
 if saving == "y":
 
-    name_file = input("Give the files a name --> ").strip().replace(" ", "_").lower()
+    name_file = input(f"Give the files a name --> ").strip().replace(" ", "_").lower()
     
     data_list.insert(1, f"Name: {name_file.replace("_", " ").capitalize()}")
         

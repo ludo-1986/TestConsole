@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+from rich import print
 import shutil
 import sys
 
@@ -147,10 +148,35 @@ def validate_mandatory_fields(input_data: dict, fields_to_check: list[tuple[str,
             missing_fields.append(label)
     return missing_fields
 
-
-def replace_char(word: str) -> str:
-        replacements = str.maketrans({
-            " ": "_", "/": "_", "'": "_", "\"": "_", ",": "_",
-            "é": "e", "è": "e", "ê": "e", "ë": "e", "à": "a", "ç": "c"
-        })
+def replace_char(word: str, to_change: dict) -> str:
+        replacements = str.maketrans(to_change)
         return word.lower().translate(replacements)
+
+def ask_number(question: str, integer: bool = False, date: bool = False) -> str | int:
+    """
+    Return answer str or int
+    
+    question : mandatory : str -> Question to ask the user
+    integer : bool -> False : default -> return str | True -> return int
+    date : bool -> True : validates length (6 or 8 digits)
+    """
+    nb_min_max = [6, 8]
+    
+    display_question = question
+    if date:
+        display_question = f"{question} ({min(nb_min_max)} ou {max(nb_min_max)} chiffres)"
+    
+    while True:
+        answer = input(f"{display_question.capitalize().strip()} --> ").strip()
+        
+        if not answer.isdigit():
+            print(f"[{'#812203'}]ERROR : ONLY NUMBERS; you must enter only numbers.[/]")
+            continue
+            
+        if date and len(answer) not in nb_min_max:
+            print(f"[{'#812203'}]ERROR : ONLY {min(nb_min_max)} OR {max(nb_min_max)} DIGITS.[/]")
+            continue
+            
+        if integer:
+            return int(answer)
+        return answer
